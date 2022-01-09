@@ -5,7 +5,7 @@ A simple brainf$%k compiler made with C++, and C libs.
 Edit code.bf file shipped with bfc.exe, or create a new file.
 Create brainfuck code. Once you are finished, open command prompt and write this command:
 ```
-./bfc.exe <filepath>
+./bfc.exe <file>
 ```
 In place of <filepath>, insert the filepath for your file, for example
 ```
