@@ -1,11 +1,12 @@
 #include <iostream>                                     // outputting data to screen
 #include <stdio.h>                                      // switch statement
+#include <errno.h>                                        // handling errors with fopen
 
 #define SOURCE_SIZE 10000                               // source code len limit (x chars)
 #define MEMORY_SIZE 30000                               // "infinite tape" const
 
 int memory[MEMORY_SIZE];                                // available program memory
-char source[SOURCE_SIZE] = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.";               // bf source code
+char source[SOURCE_SIZE];                               // bf source code
 char* src = source;                                     // instruction pointer
 int* mem = memory;                                      // memory pointer
 int loop = 0;                                           // nested loops counter
@@ -58,9 +59,25 @@ void bf_execute()
     }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-    bf_execute();
+    if(argc == 1)                                       // if there's no arguments passed (file path), output error.
+    {
+        std::cout << "ERROR: No arguments passed. \n compilation terminated." << std::endl;
+        return 0;
+    }
+
+    FILE *file = fopen(argv[1], "r");                   // open filestream
+
+    if(errno)                                           // output error if file doesn't exist
+    {
+        std::cout << "File " << argv[1] << "does not exist!" << std::endl;    
+        return 0;
+    }
+
+    fread(source, 1, SOURCE_SIZE, file);                // read source code from file
+    fclose(file);                                       // close filestream
+    bf_execute();                                       // execute brainfuck program
 
     return 0;
 }
